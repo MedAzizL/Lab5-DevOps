@@ -1,0 +1,41 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Build and push backend
+        run: |
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/backend:v1 ./backend
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/backend:v1
+
+      - name: Build and push frontend
+        run: |
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:v1 ./frontend
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:v1
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.26.0'
+
+      - name: Apply Kubernetes manifests
+        run: |
+          kubectl apply -f kubernets/backend-deployment.yaml
+          kubectl apply -f kubernets/postgres-deployment.yaml
+          kubectl apply -f kubernets/frontend-deployment.yaml
