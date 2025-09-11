@@ -19,15 +19,24 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Build and push backend
-        run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/backend:v1 ./app
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/backend:v1
+        uses: docker/build-push-action@v5
+        with:
+          context: .                       # Project root as context
+          file: ./app/Dockerfile               # Backend Dockerfile path
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/backend:v1
 
       - name: Build and push frontend
-        run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:v1 ./static
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:v1
+        uses: docker/build-push-action@v5
+        with:
+          context: .                       # Project root as context
+          file: ./static/Dockerfile      # Frontend Dockerfile path (adjust if needed)
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:v1
 
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3
@@ -36,6 +45,6 @@ jobs:
 
       - name: Apply Kubernetes manifests
         run: |
-          kubectl apply -f kubernets/backend-deployment.yaml
           kubectl apply -f kubernets/postgres-deployment.yaml
+          kubectl apply -f kubernets/backend-deployment.yaml
           kubectl apply -f kubernets/frontend-deployment.yaml
