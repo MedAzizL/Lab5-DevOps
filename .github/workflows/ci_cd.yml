@@ -21,12 +21,12 @@ jobs:
 
       - name: Build and push backend
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/backend:v1 ./backend
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/backend:v1 ./app
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/backend:v1
 
       - name: Build and push frontend
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:v1 ./frontend
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:v1 ./static
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:v1
 
       - name: Set up kubectl
