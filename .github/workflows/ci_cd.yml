@@ -33,7 +33,7 @@ jobs:
       - name: Build and push frontend
         uses: docker/build-push-action@v5
         with:
-          context: .                       # Project root as context
+          context: ./static                       # Project root as context
           file: ./static/Dockerfile      # Frontend Dockerfile path (adjust if needed)
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:v1
