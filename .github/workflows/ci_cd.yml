@@ -38,6 +38,17 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/frontend:v1
 
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Set AKS context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: DefaultResourceGroup-DEWC
+          cluster-name: cluster1
+
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3
         with:
