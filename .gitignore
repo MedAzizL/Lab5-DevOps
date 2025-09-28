@@ -1,28 +1,68 @@
-# python
+# Ignore PVC JSON files
+pvc.json
+pvc-fixed.json
+
+# Python
 __pycache__/
-
-# local db
-db.sqlite3
-
-# dependencies
-node_modules/
-
-# testing
-/coverage
-
-# production
+*.py[cod]
+*$py.class
+*.so
+.Python
 build/
-
-# npmjs
+develop-eggs/
 dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# misc
+# Environment variables
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+Thumbs.db
 
+# Logs
+*.log
+
+# Database
+*.db
+*.sqlite3
+
+# Node modules (for React frontend)
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Build outputs
+build/
+dist/
+
+# Kubernetes secrets (if any)
+secrets.yaml
