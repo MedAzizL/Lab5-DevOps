@@ -1,9 +1,17 @@
 # Build stage
 FROM node:18 AS build
 WORKDIR /app
-COPY package*.json ./
+
+# Copy package.json and package-lock.json
+COPY package*.json .     
+
+# Install dependencies
 RUN npm install --legacy-peer-deps
-COPY . .
+
+# Copy all React app files
+COPY . .                 
+
+# Build React app
 RUN npm run build
 
 # Production stage with Nginx
